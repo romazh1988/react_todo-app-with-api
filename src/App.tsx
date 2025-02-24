@@ -15,12 +15,12 @@ import { Error } from './ErrorNotification';
 import { TodoForm } from './TodoForm';
 import { Todo } from './types/Todo';
 import { UserWarning } from './UserWarning';
-import { FilterEnum } from './types/filterEnum';
+import { FilterType } from './types/filterEnum';
 
 export const App: React.FC = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [filter, setFilter] = useState<FilterEnum>(FilterEnum.All);
+  const [filter, setFilter] = useState<FilterType>(FilterType.All);
   const [loadingTodo, setLoadingTodo] = useState<number | null>(null);
   const [loadingIds, setLoadingIds] = useState<number[]>([]);
   const [tempTodo, setTempTodo] = useState<Todo | null>(null);
@@ -140,9 +140,9 @@ export const App: React.FC = () => {
 
   const filteredTodos = todos.filter(todo => {
     switch (filter) {
-      case FilterEnum.Active:
+      case FilterType.Active:
         return !todo.completed;
-      case FilterEnum.Completed:
+      case FilterType.Completed:
         return todo.completed;
       default:
         return true;
@@ -219,6 +219,11 @@ export const App: React.FC = () => {
       );
     } catch (error) {
       setErrorMessage('Unable to update a todo');
+      setTodos(prevTodos =>
+        prevTodos.map(todo =>
+          todo.id === id ? { ...todo, title: newTitle } : todo,
+        ),
+      );
       throw new globalThis.Error();
     } finally {
       setLoadingIds(prev => prev.filter(loadingId => loadingId !== id));

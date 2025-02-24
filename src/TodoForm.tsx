@@ -67,7 +67,9 @@ export const TodoForm: React.FC<Props> = ({
           ref={inputRef}
           data-cy="NewTodoField"
           type="text"
-          className="todoapp__new-todo"
+          className={classNames('todoapp__new-todo', {
+            disabled: isSubmitting,
+          })}
           placeholder="What needs to be done?"
           value={title}
           onChange={e => setTitle(e.target.value)}

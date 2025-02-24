@@ -48,7 +48,8 @@ export const TodoItem: React.FC<Props> = ({
         await onDelete(todo.id);
       } catch (error) {
         setTitle(todo.title);
-        setIsEditing(true);
+
+        return;
       }
 
       return;
@@ -59,7 +60,6 @@ export const TodoItem: React.FC<Props> = ({
       setIsEditing(false);
     } catch (error) {
       setTitle(todo.title);
-      setIsEditing(true);
     }
   };
 
@@ -95,7 +95,7 @@ export const TodoItem: React.FC<Props> = ({
           ref={inputRef}
           data-cy="TodoTitleField"
           type="text"
-          className="todoapp__edit"
+          className="todo__title-field"
           value={title}
           onChange={e => setTitle(e.target.value)}
           onBlur={handleRename}
@@ -114,7 +114,9 @@ export const TodoItem: React.FC<Props> = ({
       {!isEditing && (
         <button
           type="button"
-          className="todo__remove"
+          className={classNames('todo__remove', {
+            'todo__remove--loading': isLoading,
+          })}
           data-cy="TodoDelete"
           onClick={() => onDelete(todo.id)}
           disabled={isLoading}
