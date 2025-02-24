@@ -219,11 +219,7 @@ export const App: React.FC = () => {
       );
     } catch (error) {
       setErrorMessage('Unable to update a todo');
-      setTodos(prevTodos =>
-        prevTodos.map(todo =>
-          todo.id === id ? { ...todo, title: newTitle } : todo,
-        ),
-      );
+      throw new globalThis.Error();
     } finally {
       setLoadingIds(prev => prev.filter(loadingId => loadingId !== id));
     }

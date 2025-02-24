@@ -37,9 +37,19 @@ export const TodoItem: React.FC<Props> = ({
   const handleRename = async () => {
     const trimmedTitle = title.trim();
 
-    if (!trimmedTitle) {
-      setTitle(todo.title);
+    if (trimmedTitle === todo.title) {
       setIsEditing(false);
+
+      return;
+    }
+
+    if (!trimmedTitle) {
+      try {
+        await onDelete(todo.id);
+      } catch (error) {
+        setTitle(todo.title);
+        setIsEditing(true);
+      }
 
       return;
     }
@@ -49,6 +59,7 @@ export const TodoItem: React.FC<Props> = ({
       setIsEditing(false);
     } catch (error) {
       setTitle(todo.title);
+      setIsEditing(true);
     }
   };
 
